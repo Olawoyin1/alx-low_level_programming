@@ -1,1 +1,1 @@
-Thiss is a readme filefor this directory and it containd ==s the tsask on c-programming
+Thid id a readme file for this directory
