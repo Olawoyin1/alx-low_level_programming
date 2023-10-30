@@ -1,21 +1,35 @@
 #include "main.h"
+#include <stddef.h>
+
 /**
-  * _memset - Fill memory with a constant byte
-  * @s: memory area to fill
-  * @b: constant byte to fill
-  * @n: bytes of memory area to fill
-  *
-  * Return: the memory area filled
-  */
-
-char *_memset(char *s, char b, unsigned int n)
+ * read_textfile - reads a text file and prints it to the standard output
+ * @filename: name of the file
+ * @letters:  number of letters to be printed
+ *
+ * Return: number of letters read and printed
+ */
+ssize_t read_textfile(const char *filename, size_t letters)
 {
-	unsigned int a;
+	int file, n_read, wrote;
+	char *buffer;
 
-	for (a = 0; a < n; a++)
+	buffer = malloc(sizeof(*buffer) * (letters + 1));
+	if (filename == NULL || buffer == NULL)
 	{
-		s[a] = b;
+		free(buffer);
+		return (0);
 	}
-
-	return (s);
+	file = open(filename, O_RDONLY);
+	if (file == -1)
+		return (0);
+	n_read = read(file, buffer, letters);
+	if (n_read == -1)
+		return (0);
+	buffer[n_read] = '\0';
+	wrote = write(STDOUT_FILENO, buffer, n_read);
+	if (wrote != n_read)
+		return (0);
+	free(buffer);
+	close(file);
+	return (n_read);
 }
